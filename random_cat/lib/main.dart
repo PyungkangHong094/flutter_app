@@ -1,13 +1,22 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
+  // main() 함수에서 async를 쓰려면 필요
+  // 복사에서 사용
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // shared_preferences 인스턴스 생성
+  // 파일로 보고 파일 형태로 읽고 쓴다
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
   runApp(
     MultiProvider(
       providers: [
         // 생성자 호출 하는 방법 CATSERVICE
-        ChangeNotifierProvider(create: (context) => CatService()),
+        ChangeNotifierProvider(create: (context) => CatService(prefs)),
       ],
       child: const MyApp(),
     ),
@@ -34,8 +43,17 @@ class CatService extends ChangeNotifier {
   // 좋아요 사진
   List<String> favoriteImages = [];
 
-  CatService() {
+  // SharedPreferences 인스턴스
+  // 담아두는 변수
+  SharedPreferences prefs;
+
+  CatService(this.prefs) {
     getRandomCatImage();
+
+    // 페이버리로 저장된 페이버릿이미지를 가져온다
+    // 저장된 값이 없는경우 NULL로 반환하므로
+    //이때는 빈 배열을 넣어준다 그부분이 ?? [] 이부분이다
+    favoriteImages = prefs.getStringList("favorit") ?? [];
   }
 
   void getRandomCatImage() async {
@@ -57,6 +75,9 @@ class CatService extends ChangeNotifier {
     } else {
       favoriteImages.add(catImage);
     }
+    //페이버릿 이미지를 페이버리라는 이름으로 저장 한다
+    prefs.setStringList("favorites", favoriteImages);
+
     notifyListeners(); // 새로고침
   }
 }
