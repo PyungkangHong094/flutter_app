@@ -28,9 +28,37 @@ class AppListPage extends StatelessWidget {
       body: SafeArea(
         child: ListView(
           children: [
+            //Miso Button
+            TextButton(
+              style: TextButton.styleFrom(
+                primary: Color.fromARGB(255, 89, 144, 245),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Miso()),
+                );
+              },
+              child: Text("Miso", style: TextStyle(fontSize: 24)),
+            ),
+
+            TextButton(
+              style: TextButton.styleFrom(
+                primary: Color.fromARGB(255, 3, 96, 14),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Starbucks()),
+                );
+              },
+              child: Text("StarBucks", style: TextStyle(fontSize: 24)),
+            ),
+
             /// Miso
             ListTile(
               title: Text("1. Miso", style: TextStyle(fontSize: 24)),
+              // 미소로 넘어가는 것
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => Miso()),

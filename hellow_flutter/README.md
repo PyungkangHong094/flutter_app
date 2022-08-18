@@ -2,6 +2,10 @@
 
 A new Flutter project.
 
+# Memo
+
+- Flutter Widget 이해하기
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
